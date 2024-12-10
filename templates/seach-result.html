@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Résultats de Recherche</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .search-results {
+            margin-top: 20px;
+        }
+        .result-item {
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+        .result-item a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        .no-results {
+            text-align: center;
+            color: #666;
+        }
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🐾 Service d'Adoption d'Animaux</h1>
+            <nav>
+                <a href="/">Accueil</a>
+                <a href="/recherche">Rechercher un animal</a>
+                <a href="./html/adopter-form.html">Mettre un animal en adoption</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+
+        <h1>Résultats de Recherche</h1>
+    
+        <div class="search-results">
+            {% if results %}
+                <p>{{ results|length }} résultat(s) trouvé(s) pour "{{ query }}"</p>
+                {% for animal in results %}
+                    <div class="result-item">
+                        <h2>{{ animal.nom }}</h2>
+                        <p>Espèce: {{ animal.espece }}</p>
+                        <p>{{ animal.description }}</p>
+                        <a href="/animal/{{ animal.id }}">Voir les détails</a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-results">
+                    <p>Aucun résultat trouvé pour "{{ query }}"</p>
+                </div>
+            {% endif %}
+        </div>
+    
+        <a href="/" class="back-link">Retour à l'accueil</a>
+    </main>
+
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Service d'Adoption d'Animaux | Tous droits réservés.</p>
+        </div>
+    </footer>
+</body>
+</html>

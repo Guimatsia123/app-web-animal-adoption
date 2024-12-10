@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adoption d'Animaux</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🐾 Service d'Adoption d'Animaux</h1>
+            <nav>
+                <a href="/">Accueil</a>
+                <a href="/recherche">Rechercher un animal</a>
+                <a href="/mettre-en-adoption">Mettre un animal en adoption</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h2>Trouvez votre compagnon parfait</h2>
+                <p>Adoptez un animal qui a besoin d’un foyer chaleureux. Faites la différence aujourd'hui !</p>
+                <div class="hero-buttons">
+                    <a href="/recherche" class="btn btn-secondary">Rechercher un animal</a>
+                    <a href="/mettre-en-adoption" class="btn btn-primary">Mettre un animal en adoption</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="search-section">
+            <div class="search-container">
+                <form class="search-bar" action="/search" method="GET">
+                    <input type="text" name="query" placeholder="Recherchez un animal..." required>
+                    <button type="submit">🔍 Rechercher</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="animals">
+            <div class="container">
+                <div class="animal-grid">
+
+                    {% for animal in animals %}
+
+                    <div class="animal-card">
+                        
+                        <img src="{{ url_for('static', filename='img/' + animal.nom + '.jpg') }}" alt="{{ animal.nom }}" 
+                        onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/pets.jpeg') }}';">
+
+
+                        <h3>{{ animal.nom }}</h3>
+                        <p><strong>Espèce:</strong> {{ animal.espece }}</p>
+                        <p>{{ animal.description }}</p>
+                        <a href="/animal/{{ animal.id}}">En savoir plus</a>
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Service d'Adoption d'Animaux | Tous droits réservés.</p>
+        </div>
+    </footer>
+</body>
+</html>

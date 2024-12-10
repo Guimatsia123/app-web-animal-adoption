@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mettre un Animal en Adoption</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/adopter-form.css') }}">
+
+    
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🐾 Service d'Adoption d'Animaux</h1>
+            <nav>
+                <a href="/">Accueil</a>
+                <a href="/recherche">Rechercher un animal</a>
+                <a href="/mettre-en-adoption">Mettre un animal en adoption</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="adopter-form-section">
+            <div class="container">
+                <h2>Informations de l'animal a adopter</h2>
+                <hr>
+                <p>Remplissez ce formulaire pour mettre un animal en adoption. Tous les champs sont obligatoires.</p>
+                <form id="adopterForm" action="/mettre-en-adoption" method="POST" onsubmit="return validateForm()">
+                    <div class="form-group">
+                        <label for="nom">Nom de l'animal :</label>
+                        <input type="text" id="nom" name="nom" placeholder="Nom de l'animal" required>
+                        <span class="error-message" id="error-nom"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="espece">Espèce :</label>
+                        <input type="text" id="espece" name="espece" placeholder="Ex. Chien, Chat" required>
+                        <span class="error-message" id="error-espece"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="race">Race :</label>
+                        <input type="text" id="race" name="race" placeholder="Race de l'animal" required>
+                        <span class="error-message" id="error-race"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Âge (en années) :</label>
+                        <input type="number" id="age" name="age" placeholder="Âge de l'animal" min="0" max="30" required>
+                        <span class="error-message" id="error-age"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description :</label>
+                        <textarea id="description" name="description" placeholder="Une courte description de l'animal" rows="4" required></textarea>
+                        <span class="error-message" id="error-description"></span>
+                    </div>
+                    <h2>contact Informations</h2>
+                    <hr>
+                    <div class="form-group">
+                        <label for="courriel">Adresse courriel du propriétaire :</label>
+                        <input type="email" id="courriel" name="courriel" placeholder="exemple@email.com" required>
+                        <span class="error-message" id="error-courriel"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="adresse">Adresse civique :</label>
+                        <input type="text" id="adresse" name="adresse" placeholder="123 Rue des Animaux" required>
+                        <span class="error-message" id="error-adresse"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="ville">Ville :</label>
+                        <input type="text" id="ville" name="ville" placeholder="Ville" required>
+                        <span class="error-message" id="error-ville"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="cp">Code Postal :</label>
+                        <input type="text" id="cp" name="cp" placeholder="H1A 2B3" required>
+                        <span class="error-message" id="error-cp"></span>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Soumettre</button>
+                        <button type="reset" class="btn btn-secondary">Réinitialiser</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Service d'Adoption d'Animaux | Tous droits réservés.</p>
+        </div>
+    </footer>
+    <script src = "{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

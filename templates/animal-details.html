@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails de l'Animal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animal-detail.css') }}">
+
+
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🐾 Service d'Adoption d'Animaux</h1>
+            <nav>
+                <a href="/">Accueil</a>
+                <a href="/recherche">Rechercher un animal</a>
+                <a href="/adopter">Mettre un animal en adoption</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="animal-detail">
+            <div class="container">
+                {% if animal %}
+                <div class="animal-card-detail">
+                    
+                    <img src="{{ url_for('static', filename='img/' + animal.nom + '.jpg') }}" alt="{{ animal.nom }}" 
+                    onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/pets.jpeg') }}';">
+
+                    <div class="animal-info">
+
+                        <h2>Informations sur l'animal</h2>
+                        <hr>
+                        
+                        <h2>{{ animal.nom }}</h2>
+                        <p><strong>Espèce:</strong> {{ animal.espece }}</p>
+                        <p><strong>Race:</strong> {{ animal.race }}</p>
+                        <p><strong>Âge:</strong> {{ animal.age }}</p>
+                        <p><strong>Description:</strong> {{ animal.description }}</p>
+
+                        <h2>Informations contact</h2>
+                        <hr>
+                        <p><strong>Adresse:</strong> {{ animal.adresse }}</p>
+                        <p><strong>Ville  : </strong> {{animal.ville}}</p>
+                        <p><strong>Code Postal : </strong> {{animal.cp}}</p>
+                        <div class="contact-owner">
+                            <a href="mailto:{{animal.courriel}}" class="btn btn-primary">Contacter le propriétaire</a>
+                        </div>
+                        
+                    </div>
+                </div>
+                {% else %}
+                <div class="error-message">
+                    <p> {{ message }}</p>
+
+                </div>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Service d'Adoption d'Animaux | Tous droits réservés.</p>
+        </div>
+    </footer>
+</body>
+</html>

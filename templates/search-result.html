@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+    <title>Résultats de Recherche</title>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🐾 Service d'Adoption d'Animaux</h1>
+            <nav>
+                <a href="/">Accueil</a>
+                <a href="/recherche">Rechercher un animal</a>
+                <a href="./html/adopter-form.html">Mettre un animal en adoption</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1>Résultats de Recherche</h1>
+    
+        <div class="search-results">
+            {% if results %}
+                <p>{{ results|length }} résultat(s) trouvé(s) pour "{{ query }}"</p>
+                {% for animal in results %}
+                    <div class="result-item">
+                        <img src="{{ url_for('static', filename='img/' + animal.nom + '.jpg') }}" alt="{{ animal.nom }}" 
+                        onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/pets.jpeg') }}';">
+                        <div>
+                            <h2>{{ animal.nom }}</h2>
+                            <p><strong>Espèce:</strong> {{ animal.espece }}</p>
+                            <p>{{ animal.description }}</p>
+                            <a href="/animal/{{ animal.id }}">Voir les détails</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-results">
+                    <p>Aucun résultat trouvé pour "{{ query }}"</p>
+                </div>
+            {% endif %}
+        </div>
+    
+        <a href="/" class="back-link">Retour à l'accueil</a>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Service d'Adoption d'Animaux | Tous droits réservés.</p>
+        </div>
+    </footer>
+</body>
+</html>

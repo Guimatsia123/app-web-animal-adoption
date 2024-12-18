@@ -50,6 +50,7 @@ def index():
     db = get_db()
 
     random_animals = db.get_random_animals()
+    message = ""
     if not random_animals :
         message = "Aucun animal n'a ete publie dans la base de donnees."     
 

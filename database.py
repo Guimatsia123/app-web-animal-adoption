@@ -82,7 +82,7 @@ class Database:
         with self.get_connection() as cnx:
             cursor = cnx.cursor()
             cursor.execute("""
-            select distinct  * from animaux
+            SELECT DISTINCT  * FROM animaux 
             ORDER BY RANDOM()
             LIMIT ?
             """, (limit,) )
@@ -102,5 +102,19 @@ class Database:
         columns = ['id', 'nom', 'espece', 'race', 'age', 'description'
             , 'courriel', 'adresse', 'ville', 'cp']
         return [dict(zip(columns,row)) for row in cursor.fetchall()]
+    
+    
+    def get_recently_add(self, limit:int = 10) -> List[Dict]:
+        with self.get_connection() as cnx:
+            cursor = cnx.cursor()
+            cursor.execute("""
+            select distinct  nom, espece, race from animaux
+            ORDER BY RANDOM()
+            LIMIT ?
+            """, (limit,) )
+        columns = ['nom', 'espece', 'race']
+
+        return [dict(zip(columns,row)) for row in cursor.fetchall()]
+            
             
             

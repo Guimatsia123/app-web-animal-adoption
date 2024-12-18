@@ -23,7 +23,7 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 @app.after_request
 def add_header(response):
-    # Disable caching by setting Cache-Control headers
+    # Desactiver le cache en mode dev.
     response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '0'
@@ -48,10 +48,12 @@ def close_connection(exception):
 @app.route('/')
 def index():
     db = get_db()
-    # À remplacer par le contenu de votre choix.
-    random_animals = db.get_random_animals()
 
-    return render_template('index.html', animals = random_animals)
+    random_animals = db.get_random_animals()
+    if not random_animals :
+        message = "Aucun animal n'a ete publie dans la base de donnees."     
+
+    return render_template('index.html', animals = random_animals, message = message)
 
 @app.route('/animal/<int:animal_id>')
 def animal_details(animal_id):
@@ -63,29 +65,56 @@ def animal_details(animal_id):
 
     return render_template('animal-details.html', animal = animal, message = msg)
 
-@app.route('/search', methods = ['GET'])
-def search():
+@app.route('/rechercher', methods = ['GET'])
+def rechercher():
     db = get_db()
-    query = request.args.get('query','')
-    results = db.search_animals(query)
+    if 'query' in request.args: 
+        query = request.args.get('query','').strip()
+        if(query):
+            results = db.search_animals(query)
+            return render_template('search-result.html', results = results, query = query)
+        else: 
+            redirect(url_for('page_not_found.html'))
+    
+    return render_template('search-page.html')
 
-    return render_template('search-result.html', results = results, query = query)
 
-
-@app.route('/mettre-en-adoption', methods = ['GET','POST'])
+@app.route('/mettre-en-adoption', methods=['GET', 'POST'])
 def add_animal():
     db = get_db()
-
-    if request.method =='POST':
-        new_animal_id = db.add_animal(
-            request.form['nom'], request.form['espece'], request.form['race'],
-            request.form['age'], request.form['description'], request.form['courriel'],
-            request.form['adresse'], request.form['ville'], request.form['cp']
-        )
-        return redirect(url_for('animal_details', animal_id = new_animal_id))
+    
+    if request.method == 'POST':
+        # Recuperer et netoyer les donnees du formulaire.
+        try:
+            nom = request.form['nom'].strip()
+            espece = request.form['espece'].strip()
+            race = request.form['race'].strip()
+            age = int(request.form['age'])  
+            description = request.form['description'].strip()
+            courriel = request.form['courriel'].strip()
+            adresse = request.form['adresse'].strip()
+            ville = request.form['ville'].strip()
+            cp = request.form['cp'].strip()
+        except (KeyError, ValueError):
+            return render_template('adopter-form.html', message="Entree Invalide: Verifier les donnees et recommencer.")
+        
+        # Tentative d'insertion des donnees dans la bd.
+        try:
+            new_animal_id = db.add_animal(nom, espece, race, age, description, courriel, adresse, ville, cp)
+        except Exception as e:
+            app.logger.error(f"Echec d'ajout de l'animal: {e}")
+            return render_template('adopter-form.html', message="Erreur d'insertion dans la base de donnees ")
+        
+        # Redirige l'utilisateur vers la page des details sur l'animal recement ajouter 
+        return redirect(url_for('animal_details', animal_id=new_animal_id))
+    
     
     return render_template('adopter-form.html')
 
+# page 404 personnalise
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 if __name__ == '__name__':
     app.run(debug=True, threaded=False)

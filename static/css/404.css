@@ -1,0 +1,11 @@
+.container.span{
+ color: var(--primary-color);
+}
+.container {
+    margin: auto;
+    width: 80%;
+    text-align: center;
+    
+
+
+}

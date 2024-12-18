@@ -39,36 +39,6 @@
             </div>
         </section>
 
-        <section class="animals">
-            {% if(animals) %}
-            <div class="container">
-                <div class="animal-grid">
-
-                    {% for animal in animals %}
-
-                    <div class="animal-card">
-                        
-                        <img src="{{ url_for('static', filename='img/' + animal.nom + '.jpg') }}" alt="{{ animal.nom }}" 
-                        onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/pets.jpeg') }}';">
-
-
-                        <h3>{{ animal.nom }}</h3>
-                        <p><strong>Espèce:</strong> {{ animal.espece }}</p>
-                        <p>{{ animal.description }}</p>
-                        <a href="/animal/{{ animal.id}}">En savoir plus</a>
-                    </div>
-
-                    {% endfor %}
-
-                </div>
-            </div>
-        {% else %}
-        <div class="error-message">
-            <p> {{ message }}</p>
-
-        </div>
-        {% endif %}
-        </section>
     </main>
 
     <footer>

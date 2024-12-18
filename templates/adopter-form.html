@@ -15,7 +15,7 @@
             <h1>🐾 Service d'Adoption d'Animaux</h1>
             <nav>
                 <a href="/">Accueil</a>
-                <a href="/recherche">Rechercher un animal</a>
+                <a href="/rechercher">Rechercher un animal</a>
                 <a href="/mettre-en-adoption">Mettre un animal en adoption</a>
             </nav>
         </div>
@@ -23,6 +23,9 @@
 
     <main>
         <section class="adopter-form-section">
+            {% if(message)%}
+            <span class="error-message">{{ message }}</span>
+            {% endif %}
             <div class="container">
                 <h2>Informations de l'animal a adopter</h2>
                 <hr>
